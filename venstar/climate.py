@@ -3,7 +3,7 @@ import logging
 
 import voluptuous as vol
 
-from homeassistant.components.climate import ClimateDevice, PLATFORM_SCHEMA
+from homeassistant.components.climate import ClimateEntity, PLATFORM_SCHEMA
 from homeassistant.components.climate.const import (
     ATTR_HVAC_MODE,
     ATTR_TARGET_TEMP_HIGH,
@@ -27,7 +27,7 @@ from homeassistant.const import (
     CONF_SSL,
     CONF_TIMEOUT,
     CONF_USERNAME,
-    PRECISION_WHOLE,
+    PRECISION_HALVES,
     STATE_ON,
     TEMP_CELSIUS,
     TEMP_FAHRENHEIT,
@@ -85,7 +85,7 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
     add_entities([VenstarThermostat(client, humidifier)], True)
 
 
-class VenstarThermostat(ClimateDevice):
+class VenstarThermostat(ClimateEntity):
     """Representation of a Venstar thermostat."""
 
     def __init__(self, client, humidifier):
@@ -125,7 +125,7 @@ class VenstarThermostat(ClimateDevice):
         Venstar temperature values are passed back and forth in the
         API as whole degrees C or F.
         """
-        return PRECISION_WHOLE
+        return PRECISION_HALVES
 
     @property
     def temperature_unit(self):
